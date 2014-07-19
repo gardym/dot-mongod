@@ -1,12 +1,12 @@
 # dot-mongod
 
-Supporting your local mongo scene.
+Supporting your local mongod scene.
 
-dot-mongod runs mongo on a unique port and dumps all the files it needs under your current working directory.
+Because managing local data is the last thing you care about dot-mongod runs mongo on a unique port and dumps all the files it needs under your current working directory. Use it with it's complementary `dot-mongo` client and never worry about --dbpath again.
 
 ## Installation
 
-1. Put the files somewhere in your PATH
+1. Put the files somewhere in your $PATH
 
 ## Running
 
