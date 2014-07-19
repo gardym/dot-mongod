@@ -1,0 +1,48 @@
+#!/bin/bash
+
+DOTMONGO_DIR=$(pwd)/.dot-mongod/
+if [ ! -d "$DOTMONGO_DIR" ]; then
+  mkdir -p "$DOTMONGO_DIR"
+fi
+
+if [ -f "$DOTMONGO_DIR/mongod.pid" ]; then
+  DOTMONGO_PID=$(cat "$DOTMONGO_DIR/mongod.pid")
+fi
+
+if [ "$1" = "start" ]; then
+
+  if [ -n "$DOTMONGO_PID" ] && [ -n "$(ps ax | grep $DOTMONGO_PID | grep -v grep | grep mongod)" ]; then
+    DOTMONGO_PORT=$(lsof -p $DOTMONGO_PID -a -i tcp -F n | tail -n 1 | sed -e "s/n\*\://")
+    echo "ERROR: A dot-mongo is already running here on PORT: $DOTMONGO_PORT (PID: $DOTMONGO_PID)"
+    exit 1
+  fi
+
+  DOTMONGO_DIR_DATA=$DOTMONGO_DIR/data
+  if [ ! -d "$DOTMONGO_DIR_DATA" ]; then
+    mkdir -p "$DOTMONGO_DIR_DATA"
+  fi
+
+  DOTMONGO_PORT=27017
+  while [ -n "$(lsof -i tcp:$DOTMONGO_PORT)" ]; do
+    (( DOTMONGO_PORT++ ))
+  done
+
+  echo "Starting dot-mongo on port: $DOTMONGO_PORT"
+  mongod --quiet \
+    --port $DOTMONGO_PORT \
+    --logappend \
+    --logpath $DOTMONGO_DIR/mongod.log \
+    --pidfilepath $DOTMONGO_DIR/mongod.pid \
+    --dbpath $DOTMONGO_DIR/data/ &
+
+elif [ "$1" = "stop" ]; then
+
+  if [ -n "$(ps ax | grep $DOTMONGO_PID | grep -v grep | grep mongod)" ]; then
+    kill $DOTMONGO_PID
+  fi
+
+elif [ "$1" = "" ]; then
+
+  echo "Usage: dot-mongo.sh (start|stop)"
+
+fi
