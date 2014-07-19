@@ -2,7 +2,7 @@
 
 Supporting your local mongod scene.
 
-Because managing local data is the last thing you care about dot-mongod runs mongo on a unique port and dumps all the files it needs under your current working directory. Use it with it's complementary `dot-mongo` client and never worry about --dbpath again.
+Because managing local data is the last thing you care about `dot-mongod` runs mongo on a unique port and dumps all the files it needs under your current working directory. Use it with it's complementary `dot-mongo` client and never worry about --dbpath again.
 
 ## Installation
 
