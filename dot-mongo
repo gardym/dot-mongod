@@ -7,5 +7,5 @@ DOTMONGO_PORT=$(lsof -p $DOTMONGO_PID -a -i tcp -F n | tail -n 1 | sed -e "s/n\*
 if [ -n "$DOTMONGO_PORT" ]; then
   mongo --port $DOTMONGO_PORT
 else
-  echo "ERROR: There is no dot-mongo running in this directory."
+  echo "ERROR: There is no dot-mongod running in this directory."
 fi
