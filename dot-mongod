@@ -13,7 +13,7 @@ if [ "$1" = "start" ]; then
 
   if [ -n "$DOTMONGO_PID" ] && [ -n "$(ps ax | grep $DOTMONGO_PID | grep -v grep | grep mongod)" ]; then
     DOTMONGO_PORT=$(lsof -p $DOTMONGO_PID -a -i tcp -F n | tail -n 1 | sed -e "s/n\*\://")
-    echo "ERROR: A dot-mongo is already running here on PORT: $DOTMONGO_PORT (PID: $DOTMONGO_PID)"
+    echo "ERROR: A dot-mongod is already running here on PORT: $DOTMONGO_PORT (PID: $DOTMONGO_PID)"
     exit 1
   fi
 
@@ -27,7 +27,7 @@ if [ "$1" = "start" ]; then
     (( DOTMONGO_PORT++ ))
   done
 
-  echo "Starting dot-mongo on port: $DOTMONGO_PORT"
+  echo "Starting dot-mongod on port: $DOTMONGO_PORT"
   mongod --quiet \
     --port $DOTMONGO_PORT \
     --logappend \
@@ -43,6 +43,6 @@ elif [ "$1" = "stop" ]; then
 
 elif [ "$1" = "" ]; then
 
-  echo "Usage: dot-mongo.sh (start|stop)"
+  echo "Usage: dot-mongod (start|stop)"
 
 fi
